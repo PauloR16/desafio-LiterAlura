@@ -1,19 +1,17 @@
 package br.com.alura.challenger.SpringBoot.projeto.springBoot.service;
 
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.model.Livro;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import br.com.alura.challenger.SpringBoot.projeto.springBoot.DTO.LivroDto;
+import com.google.gson.*;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +20,10 @@ public class ConsultaApi {
 
     private static final String URL_BASE = "https://gutendex.com/books?search=";
 
-    public List<Livro> buscarLivros(String termo) {
+    public List<LivroDto> buscarLivros(String termo) {
         try {
-            // Configura HttpClient para seguir redirecionamentos
             HttpClient client = HttpClient.newBuilder()
-                    .followRedirects(HttpClient.Redirect.ALWAYS) // <-- Aqui está a mágica!
+                    .followRedirects(HttpClient.Redirect.ALWAYS)
                     .build();
 
             String urlFinal = URL_BASE + URLEncoder.encode(termo, StandardCharsets.UTF_8);
@@ -35,7 +32,7 @@ public class ConsultaApi {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(urlFinal))
                     .header("Accept", "application/json")
-                    .timeout(java.time.Duration.ofSeconds(15))
+                    .timeout(Duration.ofSeconds(15))
                     .GET()
                     .build();
 
@@ -48,7 +45,7 @@ public class ConsultaApi {
             JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
             JsonArray results = json.getAsJsonArray("results");
 
-            List<Livro> livros = new ArrayList<>();
+            List<LivroDto> livros = new ArrayList<>();
 
             for (JsonElement element : results) {
                 JsonObject obj = element.getAsJsonObject();
@@ -56,14 +53,64 @@ public class ConsultaApi {
                 String titulo = obj.get("title").getAsString();
 
                 JsonArray autoresArray = obj.getAsJsonArray("authors");
-                String autor = autoresArray.size() > 0 ? autoresArray.get(0).getAsJsonObject().get("name").getAsString() : "Desconhecido";
+                String autorNome = "Desconhecido";
+                Integer anoNascimento = null;
+                Integer anoFalecimento = null;
+
+                if (autoresArray.size() > 0) {
+                    JsonObject autorJson = autoresArray.get(0).getAsJsonObject();
+                    System.out.println("JSON BRUTO DO AUTOR: " + autorJson.toString());
+                    autorNome = autorJson.get("name").getAsString();
+
+                    if (autorJson.has("birth_year")) {
+                        JsonElement birthYearElement = autorJson.get("birth_year");
+                        if (!birthYearElement.isJsonNull() && birthYearElement.isJsonPrimitive()) {
+                            try {
+                                int valor = birthYearElement.getAsInt();
+                                System.out.println("Valor extraído de birth_year: " + valor); // ✅ Confirmação direta
+                                anoNascimento = valor;
+                            } catch (Exception e) {
+                                System.err.println("Erro ao converter birth_year para Integer");
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    if (autorJson.has("death_year")) {
+                        JsonElement deathYearElement = autorJson.get("death_year");
+                        if (!deathYearElement.isJsonNull()) {
+                            try {
+                                anoFalecimento = ((JsonPrimitive) deathYearElement).getAsInt();
+                            } catch (Exception e) {
+                                System.err.println("Erro ao converter death_year para Integer");
+                            }
+                        }
+                    }
+                }
 
                 JsonArray linguasArray = obj.getAsJsonArray("languages");
                 String idioma = linguasArray.size() > 0 ? linguasArray.get(0).getAsString() : "N/A";
 
                 int downloads = obj.has("download_count") ? obj.get("download_count").getAsInt() : 0;
 
-                livros.add(new Livro(titulo, autor, idioma, downloads));
+                System.out.println("Passando para DTO:");
+                System.out.println("AutorNome: " + autorNome);
+                System.out.println("Ano nascimento: " + anoNascimento);
+                System.out.println("Ano falecimento: " + anoFalecimento);
+                System.out.println("Idioma: " + idioma);
+                System.out.println("Downloads: " + downloads);
+                LivroDto dto = new LivroDto(titulo, autorNome, anoNascimento, anoFalecimento, idioma, downloads);
+
+                // 🧪 Logs para depuração
+                System.out.println("DTO criado:");
+                System.out.println("Título: " + dto.getTitulo());
+                System.out.println("Autor: " + dto.getAutorNome());
+                System.out.println("Ano nascimento: " + dto.getAutorNascimento());
+                System.out.println("Ano falecimento: " + dto.getAutorFalecimento());
+                System.out.println("Idioma: " + dto.getIdioma());
+                System.out.println("Downloads: " + dto.getDownloads());
+
+                livros.add(dto);
             }
 
             return livros;

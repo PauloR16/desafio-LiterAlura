@@ -1,5 +1,6 @@
 package br.com.alura.challenger.SpringBoot.projeto.springBoot.menu;
 
+import br.com.alura.challenger.SpringBoot.projeto.springBoot.DTO.LivroDto;
 import br.com.alura.challenger.SpringBoot.projeto.springBoot.model.Autor;
 import br.com.alura.challenger.SpringBoot.projeto.springBoot.model.Livro;
 import br.com.alura.challenger.SpringBoot.projeto.springBoot.service.ConsultaApi;
@@ -42,36 +43,36 @@ public class MainMenuRunner implements ApplicationRunner {
                     System.out.print("Digite o título ou autor: ");
                     String termo = scanner.nextLine();
 
-                    List<Livro> livros = consultaApi.buscarLivros(termo);
+                    List<LivroDto> livros = consultaApi.buscarLivros(termo);
 
                     if (livros.isEmpty()) {
-                        System.out.println("⚠️ Nenhum livro encontrado.");
+                        System.out.println("Nenhum livro encontrado.");
                         break;
                     }
 
-                    System.out.println("\n📚 Livros encontrados:");
-                    for (Livro livro : livros) {
-                        System.out.printf("Título: %s | Autor: %s | Idioma: %s | Downloads: %d%n",
-                                livro.getTitulo(), livro.getAutor(), livro.getIdioma(), livro.getNumeroDownloads());
+                    System.out.println("\nLivros encontrados:");
+                    for (LivroDto livro : livros) {
+                        System.out.printf("Título: %s | Autor: %s | Ano de Nascimento: %s | Ano de falecimento: %s | Idioma: %s | Downloads: %d%n",
+                                livro.getTitulo(), livro.getAutorNome(), livro.getAutorNascimento(), livro.getAutorFalecimento(), livro.getIdioma(), livro.getDownloads());
                     }
 
-                    System.out.print("\n💾 Deseja salvar estes livros no banco? (S/N): ");
+                    System.out.print("\nDeseja salvar estes livros no banco? (S/N): ");
                     String resposta = scanner.nextLine().trim().toUpperCase();
 
                     if ("S".equals(resposta)) {
                         dadosService.salvarLivros(livros);
-                        System.out.println("✅ Livros salvos com sucesso!");
+                        System.out.println("Livros salvos com sucesso!");
                     } else {
-                        System.out.println("❌ Livros não salvos.");
+                        System.out.println("Livros não salvos.");
                     }
                     break;
 
                 case 2:
                     List<Livro> todosLivros = dadosService.listarTodosLivros();
                     if (todosLivros.isEmpty()) {
-                        System.out.println("🚫 Nenhum livro registrado.");
+                        System.out.println("Nenhum livro registrado.");
                     } else {
-                        System.out.println("\n📚 Livros Registrados:");
+                        System.out.println("\nLivros Registrados:");
                         for (Livro l : todosLivros) {
                             System.out.printf("Título: %s | Autor: %s | Idioma: %s | Downloads: %d%n",
                                     l.getTitulo(), l.getAutor(), l.getIdioma(), l.getNumeroDownloads());
@@ -80,11 +81,11 @@ public class MainMenuRunner implements ApplicationRunner {
                     break;
 
                 case 3:
-                    List<String> autores = dadosService.listarAutoresUnicos();
+                    List<Autor> autores = dadosService.listarAutoresUnicos();
                     if (autores.isEmpty()) {
-                        System.out.println("🚫 Nenhum autor registrado.");
+                        System.out.println("Nenhum autor registrado.");
                     } else {
-                        System.out.println("\n✍️ Autores Registrados:");
+                        System.out.println("\nAutores Registrados:");
                         autores.forEach(System.out::println);
                     }
                     break;
@@ -95,9 +96,9 @@ public class MainMenuRunner implements ApplicationRunner {
                     scanner.nextLine();
                     List<Autor> autoresVivos = dadosService.listarAutoresVivosEmAno(ano);
                     if (autoresVivos.isEmpty()) {
-                        System.out.println("🚫 Nenhum autor vivo nesse ano.");
+                        System.out.println("Nenhum autor vivo nesse ano.");
                     } else {
-                        System.out.println("\n👨‍🦳 Autores vivos em " + ano + ":");
+                        System.out.println("\nAutores vivos em " + ano + ":");
                         autoresVivos.forEach(a -> System.out.println(a.getNome()));
                     }
                     break;
@@ -107,9 +108,9 @@ public class MainMenuRunner implements ApplicationRunner {
                     String idioma = scanner.nextLine();
                     List<Livro> livrosPorIdioma = dadosService.listarLivrosPorIdioma(idioma);
                     if (livrosPorIdioma.isEmpty()) {
-                        System.out.println("🚫 Nenhum livro encontrado nesse idioma.");
+                        System.out.println("Nenhum livro encontrado nesse idioma.");
                     } else {
-                        System.out.println("\n📚 Livros em '" + idioma + "':");
+                        System.out.println("\nLivros em '" + idioma + "':");
                         for (Livro l : livrosPorIdioma) {
                             System.out.printf("Título: %s | Autor: %s | Idioma: %s | Downloads: %d%n",
                                     l.getTitulo(), l.getAutor(), l.getIdioma(), l.getNumeroDownloads());
@@ -118,11 +119,11 @@ public class MainMenuRunner implements ApplicationRunner {
                     break;
 
                 case 0:
-                    System.out.println("👋 Saindo...");
+                    System.out.println("Saindo...");
                     return;
 
                 default:
-                    System.out.println("❌ Opção inválida.");
+                    System.out.println("Opção inválida.");
             }
         }
     }
