@@ -56,7 +56,7 @@ src/main/java
 - 🕰️ Listar autores vivos em um determinado ano  
 - 🌐 Listar livros por idioma  
 
-> **Nota:** Para simplificação, apenas o **primeiro autor** de cada livro é mostrado no menu. Internamente, o sistema suporta múltiplos autores por obra.
+> **Nota:** Para simplificação, apenas o **primeiro autor** de cada livro é mostrado no menu. problema de exibição de multiplus autores não foi completado.
 
 ---
 
