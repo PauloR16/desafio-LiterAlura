@@ -1,4 +1,4 @@
-package br.com.alura.challenger.SpringBoot.projeto.springBoot.model;
+package br.com.alura.challenger.SpringBoot.model;
 
 import jakarta.persistence.*;
 

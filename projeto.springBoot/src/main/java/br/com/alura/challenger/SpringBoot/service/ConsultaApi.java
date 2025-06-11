@@ -1,6 +1,7 @@
-package br.com.alura.challenger.SpringBoot.projeto.springBoot.service;
+package br.com.alura.challenger.SpringBoot.service;
 
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.DTO.LivroDto;
+import br.com.alura.challenger.SpringBoot.DTO.LivroDto;
+import br.com.alura.challenger.SpringBoot.utilitarios.AutorUtils;
 import com.google.gson.*;
 import org.springframework.stereotype.Service;
 
@@ -59,8 +60,8 @@ public class ConsultaApi {
 
                 if (autoresArray.size() > 0) {
                     JsonObject autorJson = autoresArray.get(0).getAsJsonObject();
-                    System.out.println("JSON BRUTO DO AUTOR: " + autorJson.toString());
                     autorNome = autorJson.get("name").getAsString();
+                    autorNome = AutorUtils.normalizarNome(autorNome);
 
                     if (autorJson.has("birth_year")) {
                         JsonElement birthYearElement = autorJson.get("birth_year");
@@ -93,22 +94,9 @@ public class ConsultaApi {
 
                 int downloads = obj.has("download_count") ? obj.get("download_count").getAsInt() : 0;
 
-                System.out.println("Passando para DTO:");
-                System.out.println("AutorNome: " + autorNome);
-                System.out.println("Ano nascimento: " + anoNascimento);
-                System.out.println("Ano falecimento: " + anoFalecimento);
-                System.out.println("Idioma: " + idioma);
-                System.out.println("Downloads: " + downloads);
+
                 LivroDto dto = new LivroDto(titulo, autorNome, anoNascimento, anoFalecimento, idioma, downloads);
 
-                // 🧪 Logs para depuração
-                System.out.println("DTO criado:");
-                System.out.println("Título: " + dto.getTitulo());
-                System.out.println("Autor: " + dto.getAutorNome());
-                System.out.println("Ano nascimento: " + dto.getAutorNascimento());
-                System.out.println("Ano falecimento: " + dto.getAutorFalecimento());
-                System.out.println("Idioma: " + dto.getIdioma());
-                System.out.println("Downloads: " + dto.getDownloads());
 
                 livros.add(dto);
             }

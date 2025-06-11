@@ -1,10 +1,10 @@
-package br.com.alura.challenger.SpringBoot.projeto.springBoot.menu;
+package br.com.alura.challenger.SpringBoot.menu;
 
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.DTO.LivroDto;
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.model.Autor;
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.model.Livro;
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.service.ConsultaApi;
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.service.DadosService;
+import br.com.alura.challenger.SpringBoot.DTO.LivroDto;
+import br.com.alura.challenger.SpringBoot.model.Autor;
+import br.com.alura.challenger.SpringBoot.model.Livro;
+import br.com.alura.challenger.SpringBoot.service.ConsultaApi;
+import br.com.alura.challenger.SpringBoot.service.DadosService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;

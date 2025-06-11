@@ -1,4 +1,4 @@
-package br.com.alura.challenger.SpringBoot.projeto.springBoot.DTO;
+package br.com.alura.challenger.SpringBoot.DTO;
 
 
 public class LivroDto {

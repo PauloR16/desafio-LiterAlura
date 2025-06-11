@@ -1,6 +1,6 @@
-package br.com.alura.challenger.SpringBoot.projeto.springBoot.repository;
+package br.com.alura.challenger.SpringBoot.repository;
 
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.model.Autor;
+import br.com.alura.challenger.SpringBoot.model.Autor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

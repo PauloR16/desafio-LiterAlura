@@ -1,10 +1,10 @@
-package br.com.alura.challenger.SpringBoot.projeto.springBoot.service;
+package br.com.alura.challenger.SpringBoot.service;
 
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.DTO.LivroDto;
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.model.Autor;
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.model.Livro;
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.repository.AutorRepository;
-import br.com.alura.challenger.SpringBoot.projeto.springBoot.repository.LivroRepository;
+import br.com.alura.challenger.SpringBoot.DTO.LivroDto;
+import br.com.alura.challenger.SpringBoot.model.Autor;
+import br.com.alura.challenger.SpringBoot.model.Livro;
+import br.com.alura.challenger.SpringBoot.repository.AutorRepository;
+import br.com.alura.challenger.SpringBoot.repository.LivroRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

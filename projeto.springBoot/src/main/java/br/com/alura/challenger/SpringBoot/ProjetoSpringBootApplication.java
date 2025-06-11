@@ -1,4 +1,4 @@
-package br.com.alura.challenger.SpringBoot.projeto.springBoot;
+package br.com.alura.challenger.SpringBoot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
